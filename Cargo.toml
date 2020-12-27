@@ -1,5 +1,5 @@
 [package]
-name = "bevy_boiler"
+name = "bevy_block"
 version = "0.1.0"
 authors = ["Levi Lovelock <lovelock.levi@gmail.com>"]
 edition = "2018"
@@ -8,3 +8,5 @@ edition = "2018"
 
 [dependencies]
 bevy = "0.4.0"
+glam = "0.11.2"
+bevy-orbit-controls = "1.0.0"
