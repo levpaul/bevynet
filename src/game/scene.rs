@@ -1,6 +1,8 @@
 use bevy::prelude::*;
 use bevy_orbit_controls::OrbitCamera;
 
+use super::*;
+
 /// set up a simple 3D scene
 pub fn setup(
     commands: &mut Commands,
@@ -22,6 +24,7 @@ pub fn setup(
             transform: Transform::from_translation(Vec3::new(0.0, 0.5, 0.0)),
             ..Default::default()
         })
+        .with(PlayerOb)
         // light
         .spawn(LightBundle {
             transform: Transform::from_translation(Vec3::new(4.0, 8.0, 4.0)),

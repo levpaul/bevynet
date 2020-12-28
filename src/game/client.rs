@@ -27,22 +27,30 @@ pub fn sys_user_input(
 pub fn sys_player_cmds(
     events: Res<Events<PlayerCommand>>,
     mut reader: Local<EventReader<PlayerCommand>>,
+    mut query: Query<(&mut Transform, &PlayerOb)>,
 ) {
+    let mut dir_x = 0.0;
+    let mut dir_z = 0.0;
     for ev in reader.iter(&events) {
         match ev {
             PlayerCommand::MoveRight => {
-                println!("right")
+                dir_z += 1.0;
             }
             PlayerCommand::MoveLeft => {
-                println!("left")
+                dir_z -= 1.0;
             }
             PlayerCommand::MoveForward => {
-                println!("forward")
+                dir_x += 1.0;
             }
             PlayerCommand::MoveBackward => {
-                println!("backawr")
+                dir_x -= 1.0;
             }
             PlayerCommand::AttackPrimary => println!("Attacj"),
         }
+    }
+
+    for mut q in query.iter_mut() {
+        q.0.translation.x += 0.01 * dir_x;
+        q.0.translation.z += 0.01 * dir_z;
     }
 }

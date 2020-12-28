@@ -26,3 +26,5 @@ pub enum PlayerCommand {
     MoveLeft,
     AttackPrimary,
 }
+
+pub struct PlayerOb;
