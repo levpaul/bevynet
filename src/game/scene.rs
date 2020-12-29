@@ -1,5 +1,4 @@
 use bevy::prelude::*;
-use bevy_orbit_controls::OrbitCamera;
 
 use super::*;
 
@@ -17,24 +16,37 @@ pub fn setup(
             material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
             ..Default::default()
         })
-        // cube
+        // light
+        .spawn(LightBundle {
+            transform: Transform::from_translation(Vec3::new(4.0, 8.0, 4.0)),
+            ..Default::default()
+        })
+        // cube (player)
         .spawn(PbrBundle {
             mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
             material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
             transform: Transform::from_translation(Vec3::new(0.0, 0.5, 0.0)),
             ..Default::default()
         })
-        .with(PlayerOb)
-        // light
-        .spawn(LightBundle {
-            transform: Transform::from_translation(Vec3::new(4.0, 8.0, 4.0)),
-            ..Default::default()
+        .with(PlayerOb {
+            velocity: Vec3::default(),
+            camera_angle: Vec3::default(),
         })
-        // camera
-        .spawn(Camera3dBundle {
-            transform: Transform::from_translation(Vec3::new(-2.0, 2.5, 5.0))
-                .looking_at(Vec3::default(), Vec3::unit_y()),
-            ..Default::default()
-        })
-        .with(OrbitCamera::default());
+        .with_children(|p| {
+            p.spawn(Camera3dBundle {
+                transform: Transform::from_translation(Vec3::new(-2.0, 2.5, 5.0))
+                    // global_transform: GlobalTransform::from_translation(Vec3::new(-2.0, 2.5, 5.0))
+                    .looking_at(Vec3::default(), Vec3::unit_y()),
+                ..Default::default()
+            })
+            .with(orbit::OrbitCamera::default());
+        });
+    // .spawn(
+    //     Camera3dBundle {
+    //         transform: Transform::from_translation(Vec3::new(-2.0, 2.5, 5.0))
+    //             .looking_at(Vec3::default(), Vec3::unit_y()),
+    //         ..Default::default()
+    //     }, // orbit::OrbitCamera::default(),
+    // )
+    // .with(orbit::OrbitCamera::default());
 }
