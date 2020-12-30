@@ -8,14 +8,34 @@ pub fn setup(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
+    let (rows, cols) = (50, 50);
+    let size = 2.0;
+    let max_shade = (rows * cols * 1) as f32;
+    for i in 0..rows {
+        for j in 0..cols {
+            let cur_shade = (cols * j + i) as f32;
+            commands.spawn(PbrBundle {
+                mesh: meshes.add(Mesh::from(shape::Plane { size })),
+                transform: Transform::from_translation(Vec3::new(
+                    -rows as f32 + i as f32 * size,
+                    0.0,
+                    -cols as f32 + j as f32 * size,
+                )),
+                material: materials.add(
+                    Color::rgb(
+                        cur_shade / max_shade,
+                        cur_shade / max_shade,
+                        cur_shade / max_shade,
+                    )
+                    .into(),
+                ),
+                ..Default::default()
+            });
+        }
+    }
+
     // add entities to the world
     commands
-        // plane
-        .spawn(PbrBundle {
-            mesh: meshes.add(Mesh::from(shape::Plane { size: 5.0 })),
-            material: materials.add(Color::rgb(0.3, 0.5, 0.3).into()),
-            ..Default::default()
-        })
         // light
         .spawn(LightBundle {
             transform: Transform::from_translation(Vec3::new(4.0, 8.0, 4.0)),
@@ -23,30 +43,20 @@ pub fn setup(
         })
         // cube (player)
         .spawn(PbrBundle {
-            mesh: meshes.add(Mesh::from(shape::Cube { size: 1.0 })),
-            material: materials.add(Color::rgb(0.8, 0.7, 0.6).into()),
-            transform: Transform::from_translation(Vec3::new(0.0, 0.5, 0.0)),
+            mesh: meshes.add(Mesh::from(shape::Cube { size: 2.0 })),
+            material: materials.add(Color::rgb(0.1, 0.2, 0.6).into()),
+            transform: Transform::from_translation(Vec3::new(-1.0, 1.0, -1.0)),
             ..Default::default()
         })
         .with(PlayerOb {
             velocity: Vec3::default(),
-            camera_angle: Vec3::default(),
         })
         .with_children(|p| {
             p.spawn(Camera3dBundle {
-                transform: Transform::from_translation(Vec3::new(-2.0, 2.5, 5.0))
-                    // global_transform: GlobalTransform::from_translation(Vec3::new(-2.0, 2.5, 5.0))
+                transform: Transform::from_translation(Vec3::new(-0.0, 2.5, -5.0))
                     .looking_at(Vec3::default(), Vec3::unit_y()),
                 ..Default::default()
             })
-            .with(orbit::OrbitCamera::default());
+            .with(orbit::OrbitCamera::new(13.0, Vec3::default()));
         });
-    // .spawn(
-    //     Camera3dBundle {
-    //         transform: Transform::from_translation(Vec3::new(-2.0, 2.5, 5.0))
-    //             .looking_at(Vec3::default(), Vec3::unit_y()),
-    //         ..Default::default()
-    //     }, // orbit::OrbitCamera::default(),
-    // )
-    // .with(orbit::OrbitCamera::default());
 }

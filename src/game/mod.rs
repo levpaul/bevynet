@@ -1,6 +1,7 @@
 mod client;
-mod scene;
+mod fps;
 mod orbit;
+mod scene;
 
 use bevy::prelude::*;
 
@@ -8,7 +9,8 @@ pub struct Plugin;
 impl bevy::app::Plugin for Plugin {
     fn build(&self, app: &mut AppBuilder) {
         app.add_startup_system(scene::setup.system())
-        .add_plugin(orbit::OrbitCameraPlugin)
+            .add_plugin(orbit::OrbitCameraPlugin)
+            .add_plugin(fps::Plugin)
             .add_event::<PlayerCommand>()
             .add_system(bevy::input::system::exit_on_esc_system.system())
             .add_stage_after(
@@ -31,5 +33,4 @@ pub enum PlayerCommand {
 
 pub struct PlayerOb {
     velocity: Vec3,
-    camera_angle: Vec3,
 }

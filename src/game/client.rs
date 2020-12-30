@@ -29,7 +29,7 @@ pub fn sys_player_cmds(
     events: Res<Events<PlayerCommand>>,
     mut reader: Local<EventReader<PlayerCommand>>,
     mut player_query: Query<(&mut Transform, &mut PlayerOb)>,
-    mut camera_query: Query<(&Transform, &Camera)>,
+    camera_query: Query<(&Transform, &Camera)>,
 ) {
     let mut dir_x = 0.0;
     let mut dir_z = 0.0;
@@ -78,11 +78,11 @@ pub fn sys_player_cmds(
     for mut q in player_query.iter_mut() {
         q.1.velocity *= 0.9;
 
-        let camAngle = f32::atan2(cam_q.x, cam_q.z);
-        let newQ = Quat::from_axis_angle(Vec3::new(0., 1., 0.), camAngle);
+        let cam_angle = f32::atan2(cam_q.x, cam_q.z);
+        let new_q = Quat::from_axis_angle(Vec3::new(0., 1., 0.), cam_angle);
 
         let new_force = Vec3::from((0.01 * dir_x, 0.0, 0.01 * dir_z));
-        let new_force = newQ.mul_vec3(new_force);
+        let new_force = new_q.mul_vec3(new_force);
         q.1.velocity += new_force;
         q.0.translation += q.1.velocity;
     }
