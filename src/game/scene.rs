@@ -8,7 +8,7 @@ pub fn setup(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    let (rows, cols) = (50, 50);
+    let (rows, cols) = (10, 10);
     let size = 2.0;
     let max_shade = (rows * cols * 1) as f32;
     for i in 0..rows {
@@ -17,9 +17,9 @@ pub fn setup(
             commands.spawn(PbrBundle {
                 mesh: meshes.add(Mesh::from(shape::Plane { size })),
                 transform: Transform::from_translation(Vec3::new(
-                    -rows as f32 + i as f32 * size,
+                    (-rows + 1) as f32 + i as f32 * size,
                     0.0,
-                    -cols as f32 + j as f32 * size,
+                    (-cols + 1) as f32 + j as f32 * size,
                 )),
                 material: materials.add(
                     Color::rgb(
@@ -45,7 +45,7 @@ pub fn setup(
         .spawn(PbrBundle {
             mesh: meshes.add(Mesh::from(shape::Cube { size: 2.0 })),
             material: materials.add(Color::rgb(0.1, 0.2, 0.6).into()),
-            transform: Transform::from_translation(Vec3::new(-1.0, 1.0, -1.0)),
+            transform: Transform::from_translation(Vec3::new(0.0, 1.0, 0.0)),
             ..Default::default()
         })
         .with(PlayerOb {
@@ -53,7 +53,7 @@ pub fn setup(
         })
         .with_children(|p| {
             p.spawn(Camera3dBundle {
-                transform: Transform::from_translation(Vec3::new(-0.0, 2.5, -5.0))
+                transform: Transform::from_translation(Vec3::new(5.0, 3.5, 0.0))
                     .looking_at(Vec3::default(), Vec3::unit_y()),
                 ..Default::default()
             })

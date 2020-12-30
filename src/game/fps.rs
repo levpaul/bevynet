@@ -20,30 +20,51 @@ pub fn text_update_system(
         if let Some(fps) = diagnostics.get(FrameTimeDiagnosticsPlugin::FPS) {
             if let Some(average) = fps.average() {
                 text.value = format!("FPS: {:.2}", average);
-                println!("FPS: {}", text.value);
             }
         }
     }
 }
 
 /// set up a FPS counter
-pub fn setup(commands: &mut Commands, asset_server: Res<AssetServer>) {
+pub fn setup(
+    commands: &mut Commands,
+    asset_server: Res<AssetServer>,
+    mut color_materials: ResMut<Assets<ColorMaterial>>,
+) {
     commands
-        .spawn(TextBundle {
+        .spawn(CameraUiBundle::default())
+        .spawn(NodeBundle {
             style: Style {
-                align_self: AlignSelf::FlexEnd,
-                ..Default::default()
-            },
-            text: Text {
-                value: "FPS:".to_string(),
-                font: asset_server.load("fonts/FiraSans-Bold.ttf"),
-                style: TextStyle {
-                    font_size: 60.0,
-                    color: Color::WHITE,
+                position_type: PositionType::Absolute,
+                position: Rect {
+                    left: Val::Px(10.),
+                    top: Val::Px(10.),
                     ..Default::default()
                 },
+                ..Default::default()
             },
+            material: color_materials.add(Color::NONE.into()),
             ..Default::default()
         })
-        .with(FpsText);
+        .with_children(|parent| {
+            parent
+                .spawn(TextBundle {
+                    style: Style {
+                        align_self: AlignSelf::FlexEnd,
+                        ..Default::default()
+                    },
+                    text: Text {
+                        value: "FPS:".to_string(),
+                        font: asset_server.load("fonts/FiraSans-Bold.ttf"),
+                        style: TextStyle {
+                            font_size: 30.0,
+                            color: Color::WHITE,
+                            ..Default::default()
+                        },
+                    },
+                    transform: Transform::from_translation(Vec3::new(1., 1., 1.)),
+                    ..Default::default()
+                })
+                .with(FpsText);
+        });
 }
