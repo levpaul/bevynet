@@ -58,7 +58,7 @@ pub fn sys_player_cmds(
 
     for mut q in player_query.iter_mut() {
         q.1.velocity *= 0.9; // decel
-        let new_force = Vec3::from((0.01 * dir_x, 0.0, 0.01 * dir_z));
+        let new_force = Vec3::from((0.02 * dir_x, 0.0, 0.02 * dir_z));
 
         let cam_angle = f32::atan2(cam_f.x, cam_f.z);
         let new_q = Quat::from_axis_angle(Vec3::new(0., 1., 0.), cam_angle);
