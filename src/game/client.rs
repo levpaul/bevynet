@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use orbit::OrbitCamera;
+use cam_ctrl::PrimaryCameraHook;
 
 use super::*;
 use bevy::render::camera::Camera;
@@ -29,7 +29,7 @@ pub fn sys_player_cmds(
     events: Res<Events<PlayerCommand>>,
     mut reader: Local<EventReader<PlayerCommand>>,
     mut player_query: Query<(&mut Transform, &mut PlayerOb)>,
-    camera_query: Query<(&Transform, &Camera, &OrbitCamera)>,
+    camera_query: Query<(&Transform, &PrimaryCameraHook)>,
 ) {
     let mut dir_x = 0.0;
     let mut dir_z = 0.0;

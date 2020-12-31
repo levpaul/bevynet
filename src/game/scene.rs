@@ -52,11 +52,7 @@ pub fn setup(
             velocity: Vec3::default(),
         })
         .with_children(|p| {
-            p.spawn(Camera3dBundle {
-                transform: Transform::from_translation(Vec3::new(5.0, 3.5, 0.0))
-                    .looking_at(Vec3::default(), Vec3::unit_y()),
-                ..Default::default()
-            })
-            .with(orbit::OrbitCamera::new(13.0, Vec3::default()));
+            p.spawn(Camera3dBundle::default())
+                .with(cam_ctrl::PrimaryCameraHook::default());
         });
 }

@@ -2,15 +2,10 @@ use bevy::diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin};
 use bevy::prelude::*;
 
 pub struct FpsText;
-
-pub struct Plugin {
-    pub font_size: f32,
-}
-
+pub struct Plugin;
 impl bevy::app::Plugin for Plugin {
     fn build(&self, app: &mut AppBuilder) {
-        app.add_resource(self.font_size)
-            .add_startup_system(setup.system())
+        app.add_startup_system(setup.system())
             .add_plugin(FrameTimeDiagnosticsPlugin::default())
             .add_system(text_update_system.system());
     }
