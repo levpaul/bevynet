@@ -1,26 +1,28 @@
-use bevy::prelude::*;
+use bevy::{input::mouse::MouseButtonInput, prelude::*};
 use cam_ctrl::PrimaryCameraHook;
 
 use super::*;
-use bevy::render::camera::Camera;
 
 pub fn sys_user_input(
     mut player_commands: ResMut<Events<PlayerCommand>>,
-    kbi: Res<Input<KeyCode>>,
+    kb_in: Res<Input<KeyCode>>,
+    mb_in: Res<Input<MouseButton>>,
 ) {
-    if kbi.pressed(KeyCode::W) {
+    if kb_in.pressed(KeyCode::W)
+        || (mb_in.pressed(MouseButton::Left) && mb_in.pressed(MouseButton::Right))
+    {
         player_commands.send(PlayerCommand::MoveForward);
     }
-    if kbi.pressed(KeyCode::A) {
+    if kb_in.pressed(KeyCode::A) {
         player_commands.send(PlayerCommand::MoveLeft);
     }
-    if kbi.pressed(KeyCode::S) {
+    if kb_in.pressed(KeyCode::S) {
         player_commands.send(PlayerCommand::MoveBackward);
     }
-    if kbi.pressed(KeyCode::D) {
+    if kb_in.pressed(KeyCode::D) {
         player_commands.send(PlayerCommand::MoveRight);
     }
-    if kbi.just_pressed(KeyCode::Space) {
+    if kb_in.just_pressed(KeyCode::Space) {
         player_commands.send(PlayerCommand::AttackPrimary);
     }
 }
@@ -53,7 +55,7 @@ pub fn sys_player_cmds(
 
     let mut cam_f = Vec3::default();
     for q in camera_query.iter() {
-        cam_f = q.0.forward();
+        cam_f = q.1.forward;
     }
 
     for mut q in player_query.iter_mut() {

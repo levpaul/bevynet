@@ -8,7 +8,7 @@ pub fn setup(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    let (rows, cols) = (10, 10);
+    let (rows, cols) = (20, 20);
     let size = 2.0;
     let max_shade = (rows * cols * 1) as f32;
     for i in 0..rows {
@@ -36,9 +36,13 @@ pub fn setup(
 
     // add entities to the world
     commands
-        // light
+        // lights
         .spawn(LightBundle {
-            transform: Transform::from_translation(Vec3::new(4.0, 8.0, 4.0)),
+            transform: Transform::from_translation(Vec3::new(0.0, 8.0, -10.0)),
+            ..Default::default()
+        })
+        .spawn(LightBundle {
+            transform: Transform::from_translation(Vec3::new(0.0, 8.0, -10.0)),
             ..Default::default()
         })
         // cube (player)

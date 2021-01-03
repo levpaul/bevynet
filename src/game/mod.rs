@@ -12,7 +12,6 @@ impl bevy::app::Plugin for Plugin {
             .add_plugin(cam_ctrl::Plugin::default())
             .add_plugin(fps::Plugin)
             .add_event::<PlayerCommand>()
-            .add_event::<Tick>()
             .add_system(bevy::input::system::exit_on_esc_system.system())
             .add_stage_after(
                 stage::UPDATE,
