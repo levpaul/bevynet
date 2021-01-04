@@ -1,6 +1,6 @@
 mod cam_ctrl;
-mod client;
-mod fps;
+mod player_ctrl;
+mod fps_display;
 mod scene;
 
 use bevy::prelude::*;
@@ -10,15 +10,15 @@ impl bevy::app::Plugin for Plugin {
     fn build(&self, app: &mut AppBuilder) {
         app.add_startup_system(scene::setup.system())
             .add_plugin(cam_ctrl::Plugin::default())
-            .add_plugin(fps::Plugin)
+            .add_plugin(fps_display::Plugin)
             .add_event::<PlayerCommand>()
             .add_system(bevy::input::system::exit_on_esc_system.system())
             .add_stage_after(
                 stage::UPDATE,
                 "client_stage",
                 SystemStage::serial()
-                    .with_system(client::sys_user_input.system())
-                    .with_system(client::sys_player_cmds.system()),
+                    .with_system(player_ctrl::sys_user_input.system())
+                    .with_system(player_ctrl::sys_player_cmds.system()),
             );
     }
 }
